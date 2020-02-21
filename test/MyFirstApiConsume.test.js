@@ -62,10 +62,6 @@ describe('First Api Tests', () => {
   
     expect(response.status).to.equal(statusCode.OK);
     expect(response.body).to.have.property('json');
-
   });
   
 });
-
-
-
