@@ -6,53 +6,65 @@ const expect = chai.expect;
 
 describe('First Api Tests', () => {
 
-});
-
-it('Consume GET Service', async () => {
-  const response = await agent.get('https://httpbin.org/ip');
-
-  expect(response.status).to.equal(statusCode.OK);
-  expect(response.body).to.have.property('origin');
-});
-
-it('Consume GET Service with query parameters', async () => {
   const query = {
     name: 'John',
     age: '31',
     city: 'New York'
   };
 
-  const response = await agent.get('https://httpbin.org/get').query(query);
-
-  expect(response.status).to.equal(statusCode.OK);
-  expect(response.body.args).to.eql(query);
-});
-
-it('Consume HEAD Service', async () => {
-  const response = await agent.head('https://httpbin.org/get');
+  it('Consume GET Service', async () => {
+    const response = await agent.get('https://httpbin.org/ip');
   
-  expect(response.status).to.equal(statusCode.OK);
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.body).to.have.property('origin');
+  });
+  
+  it('Consume GET Service with query parameters', async () => {
+  
+    const response = await agent.get('https://httpbin.org/get').query(query);
+  
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.body.args).to.eql(query);
+  });
+  
+  it('Consume HEAD Service', async () => {
+    const response = await agent.head('https://httpbin.org/get');
+    
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.headers).to.have.property('date');
+  });
+  
+  it('Consume PATCH Service', async () => {
+   const response = await agent.patch('https://httpbin.org/patch')
+  
+   expect(response.status).to.equal(statusCode.OK);
+   expect(response.body).to.have.property('headers');
+  });
+  it('Consume PATCH Service with body', async () => {
+    const response = await agent.patch('https://httpbin.org/patch').query(query)
+   
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.body).to.have.property('headers');
+    expect(response.body.args).to.eql(query);
+   });
+  
+  it('Consume PUT Service send person', async () => {
+    const response = await agent.put('https://httpbin.org/put').query(query);
+  
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.body).to.have.property('origin');
+    expect(response.body.args).to.eql(query);
+  });
+ 
+  
+  it('Consume DELETE Service', async () => {
+    const response = await agent.del('https://httpbin.org/delete');
+  
+    expect(response.status).to.equal(statusCode.OK);
+    expect(response.body).to.have.property('json');
+  });
+  
 });
 
-it('Consume PATCH Service', async () => {
- const response = await agent.patch('https://httpbin.org/patch')
-
- expect(response.status).to.equal(statusCode.OK);
- expect(response.body).to.have.property('headers');
-});
-
-it('Consume PUT Service', async () => {
-  const response = await agent.put('https://httpbin.org/put');
-
-  expect(response.status).to.equal(statusCode.OK);
-  expect(response.body).to.have.property('origin');
-});
-
-it('Consume DELETE Service', async () => {
-  const response = await agent.delete('https://httpbin.org/delete');
-
-  expect(response.status).to.equal(statusCode.OK);
-  expect(response.body).to.have.property('json');
-});
 
 
